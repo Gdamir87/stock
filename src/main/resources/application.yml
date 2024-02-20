@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: stock
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/stock}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
