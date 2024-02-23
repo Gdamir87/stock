@@ -1,62 +1,39 @@
 package ru.damir.stock.controller.dto;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import ru.damir.stock.entity.Product;
 import ru.damir.stock.service.ProductService;
 
-import java.util.List;
-
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
-
+    private final ProductService productService;
 
     /**
-     * Выыести весь список товаров.<br>
-     *
-     * @return список товаров
-     */
-    @GetMapping("/products")
-    public List<Product> showAllProducts () {
-        List<Product> allProducts = productService.getAllProducts();
-        return allProducts;
-    }
-
-    /**
-     * Отписаться от всех товаров.<br>
-     * Если пользователя не было в БД - логируем
-     *
-     * @param id Данные для поиска по id
-     * @return товар
-     */
-    @GetMapping("/products/{id}")
-    public Product getProduct (@PathVariable int id) {
-        Product product = productService.getProduct(id);
-        return product;
-    }
-
-    /**
-     * Отписаться от всех товаров.<br>
-     * Если пользователя не было в БД - логируем
+     * Добавить новый товар.<br>
      *
      * @param request Данные для добавления нового товаара
-     * @return статус
+     *
      */
     @PostMapping("/products")
-    public Product addProduct (Product product) {
-        productService.saveProduct(product);
-        return product;
+    public StatusResponse addProduct (@Valid @RequestBody ProductManagementRequest request) {
+        return new StatusResponse(productService.saveProduct(request)
+                .getStatus());
     }
 
-    @DeleteMapping("/products/{id}")
-    public void deleteProduct (@PathVariable int id) {
-        productService.deleteProduct(id);
+    @GetMapping("/products")
+    public StatusResponse showAllProducts () {
+        return productService.showAllProducts();
     }
 
+    @GetMapping("/products/{id}")
+    public StatusResponse showProductById (@PathVariable Long id) {
+        return productService.showProductById(id);
+    }
 }
