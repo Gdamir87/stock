@@ -1,49 +1,37 @@
-package ru.damir.stock.entity;
+package ru.damir.stock.controller.dto;
 
-
-import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-@Table (name = "product")
-public class Product {
-    /**
-     * id
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "id")
-    private Long id;
-
+public class AddNewProductRequest {
     /**
      * наименование товара
      */
-    @Column (name = "name")
+    //@NotEmpty
     private String name;
 
     /**
      * описание товара
      */
-    @Column (name = "description")
+    //@NotEmpty
     private String description;
 
     /**
      * стоимость
      */
-    @Column (name = "price")
+    //@NotNull
     private Double price;
 
     /**
      * количество на складе
      */
-    @Column (name = "quantity")
-    private int quantity;
-
+    //@NotNull
+    //@Min(1)
+    //@Max(1000)
+    private Integer quantity;
 }
