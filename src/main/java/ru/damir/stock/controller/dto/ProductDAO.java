@@ -2,6 +2,7 @@ package ru.damir.stock.controller.dto;
 
 //import org.hibernate.Session;
 //import org.hibernate.query.Query;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ public class ProductDAO {
 
     @Autowired
     private EntityManager entityManager;
+
 
     public List<Product> getAllProducts() {
 //        Session session = entityManager.unwrap(Session.class);
@@ -30,6 +32,7 @@ public class ProductDAO {
     public void saveProduct(Product product) {
 //        Session session = entityManager.unwrap(Session.class);
 //        session.persist(product);
+
         Product newProduct = entityManager.merge(product);
         product.setId(newProduct.getId());
     }

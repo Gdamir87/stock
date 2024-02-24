@@ -45,11 +45,11 @@ public class ProductController {
      * Отписаться от всех товаров.<br>
      * Если пользователя не было в БД - логируем
      *
-     * @param request Данные для добавления нового товаара
+     * @param product Данные для добавления нового товаара
      * @return статус
      */
     @PostMapping("/products")
-    public Product addProduct (Product product) {
+    public Product addProduct (@RequestBody Product product) {
         productService.saveProduct(product);
         return product;
     }
