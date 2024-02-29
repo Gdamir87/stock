@@ -28,12 +28,18 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public StatusResponse showAllProducts () {
+    public ProductResponse showAllProducts () {
         return productService.showAllProducts();
     }
 
     @GetMapping("/products/{id}")
     public StatusResponse showProductById (@PathVariable Long id) {
         return productService.showProductById(id);
+    }
+
+    @PostMapping("/products/{id}")
+    public StatusResponse updateProductById(@PathVariable Long id, @RequestBody ProductManagementRequest request) {
+        return new StatusResponse(productService.updateProduct(id, request)
+                .getStatus());
     }
 }

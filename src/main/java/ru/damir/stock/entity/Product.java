@@ -22,6 +22,17 @@ public class Product {
     @Column (name = "id")
     private Long id;
 
+//    @Override
+//    public String toString() {
+//        return "id= " + id + '\'' +
+//                ", name='" + name + '\'' +
+//                ", description='" + description + '\'' +
+//                ", price=" + price +
+//                ", quantity=" + quantity +
+//                '\n' +
+//                '}';
+//    }
+
     /**
      * наименование товара
      */
