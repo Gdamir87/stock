@@ -1,10 +1,13 @@
 package ru.damir.stock.controller.dto;
 
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -15,6 +18,12 @@ public class ProductDto {
      * id
      */
     private Long currentId;
+
+    /**
+     * артикул товара
+     */
+    private String currentArticle;
+
     /**
      * наименование товара
      */
@@ -28,11 +37,11 @@ public class ProductDto {
     /**
      * стоимость
      */
-    private Double currentPrice;
+    private BigDecimal currentPrice;
 
     /**
      * количество на складе
      */
-    private int currentQuantity;
+    private Long currentQuantity;
 
 }

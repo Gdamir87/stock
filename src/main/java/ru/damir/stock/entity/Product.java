@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Builder
@@ -22,16 +24,11 @@ public class Product {
     @Column (name = "id")
     private Long id;
 
-//    @Override
-//    public String toString() {
-//        return "id= " + id + '\'' +
-//                ", name='" + name + '\'' +
-//                ", description='" + description + '\'' +
-//                ", price=" + price +
-//                ", quantity=" + quantity +
-//                '\n' +
-//                '}';
-//    }
+    /**
+     * артикул товара
+     */
+    @Column (name = "article")
+    private String article;
 
     /**
      * наименование товара
@@ -49,12 +46,12 @@ public class Product {
      * стоимость
      */
     @Column (name = "price")
-    private Double price;
+    private BigDecimal price;
 
     /**
      * количество на складе
      */
     @Column (name = "quantity")
-    private int quantity;
+    private Long quantity;
 
 }

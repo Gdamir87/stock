@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import ru.damir.stock.service.ProductService;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -23,23 +25,30 @@ public class ProductController {
      */
     @PostMapping("/products")
     public StatusResponse addProduct (@Valid @RequestBody ProductManagementRequest request) {
-        return new StatusResponse(productService.saveProduct(request)
-                .getStatus());
+        productService.saveProduct(request);
+        return new StatusResponse("Новый товар добавлен");
     }
 
     @GetMapping("/products")
-    public ProductResponse showAllProducts () {
-        return productService.showAllProducts();
+    public List<ProductDto> getAllProducts () {
+        return productService.getAllProducts();
     }
 
     @GetMapping("/products/{id}")
-    public StatusResponse showProductById (@PathVariable Long id) {
-        return productService.showProductById(id);
+    public ProductDto getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
     }
 
     @PostMapping("/products/{id}")
     public StatusResponse updateProductById(@PathVariable Long id, @RequestBody ProductManagementRequest request) {
-        return new StatusResponse(productService.updateProduct(id, request)
-                .getStatus());
+        productService.updateProduct(id, request);
+        return new StatusResponse("Данные успешно обновлены");
     }
+
+    @DeleteMapping("/products/{id}")
+    public StatusResponse deleteProduct (@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return new StatusResponse("Товар успешно удален");
+    }
+
 }
