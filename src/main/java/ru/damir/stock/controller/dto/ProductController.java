@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import ru.damir.stock.service.ProductService;
 
 import java.util.List;
@@ -24,9 +23,8 @@ public class ProductController {
      *
      */
     @PostMapping("/products")
-    public StatusResponse addProduct (@Valid @RequestBody ProductManagementRequest request) {
-        productService.saveProduct(request);
-        return new StatusResponse("Новый товар добавлен");
+    public ProductDto addProduct (@Valid @RequestBody ProductDto request) {
+        return productService.addProduct(request);
     }
 
     @GetMapping("/products")
@@ -40,9 +38,8 @@ public class ProductController {
     }
 
     @PostMapping("/products/{id}")
-    public StatusResponse updateProductById(@PathVariable Long id, @RequestBody ProductManagementRequest request) {
-        productService.updateProduct(id, request);
-        return new StatusResponse("Данные успешно обновлены");
+    public ProductDto updateProductById(@PathVariable Long id, @RequestBody ProductDto request) {
+        return productService.updateProduct(id, request);
     }
 
     @DeleteMapping("/products/{id}")

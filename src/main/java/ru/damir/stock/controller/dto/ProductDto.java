@@ -1,7 +1,10 @@
 package ru.damir.stock.controller.dto;
 
-
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,37 +14,45 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductDto {
+
+
     /**
      * id
      */
-    private Long currentId;
+    private Long id;
 
     /**
-     * артикул товара
+     * наименовани товара
      */
-    private String currentArticle;
+    @NotBlank (message = "Артикул не может быть пустым")
+    private String article;
 
     /**
      * наименование товара
      */
-    private String currentName;
+    @NotBlank (message = "Наименование не может быть пустым")
+    private String name;
 
     /**
      * описание товара
      */
-    private String currentDescription;
+    @NotBlank (message = "Описание товара не может быть пустым")
+    private String description;
 
     /**
      * стоимость
      */
-    private BigDecimal currentPrice;
+    @DecimalMin(value = "0.00001", message = "Стоимость должна быть больше нуля")
+    private BigDecimal price;
 
     /**
      * количество на складе
      */
-    private Long currentQuantity;
-
+    @NotNull (message = "Количество не может быть пустым")
+    @Min(value = 1, message = "Количество должно быть больше нуля")
+    @Max(value = 1000, message = "Количество не должно быть более 999")
+    private Long quantity;
 }

@@ -9,8 +9,6 @@ import org.apache.commons.collections4.IterableUtils;
 import org.springframework.stereotype.Service;
 
 import ru.damir.stock.controller.dto.ProductDto;
-import ru.damir.stock.controller.dto.ProductManagementRequest;
-import ru.damir.stock.controller.dto.StatusResponse;
 import ru.damir.stock.entity.Product;
 import ru.damir.stock.repository.ProductRepository;
 import ru.damir.stock.utils.ProductMapper;
@@ -25,12 +23,13 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public void saveProduct(ProductManagementRequest request) {
+    public ProductDto addProduct(ProductDto request) {
         if (productRepository.findByArticle(request.getArticle()).isPresent()) {
             throw new RuntimeException("Такой товар уже существует");
         }
         Product product = ProductMapper.toProduct(request);
         productRepository.save(product);
+        return ProductMapper.toDto(product);
     }
 
     @Transactional
@@ -44,19 +43,21 @@ public class ProductService {
     public ProductDto getProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Такого товара не существует"));
         ProductDto productDto = ProductMapper.toDto(product);
+
         return productDto;
 
     }
 
     @Transactional
-    public void updateProduct(Long id, ProductManagementRequest request) {
+    public ProductDto updateProduct(Long id, ProductDto request) {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Такого товара не существует"));
         product.setArticle(request.getArticle());
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
         product.setQuantity(request.getQuantity());
-        productRepository.save(product);
+
+        return ProductMapper.toDto(product);
     }
 
     @Transactional
