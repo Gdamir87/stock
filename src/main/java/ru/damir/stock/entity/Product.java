@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Builder
@@ -21,6 +23,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "id")
     private Long id;
+
+    /**
+     * артикул товара
+     */
+    @Column (name = "article")
+    private String article;
 
     /**
      * наименование товара
@@ -38,12 +46,12 @@ public class Product {
      * стоимость
      */
     @Column (name = "price")
-    private Double price;
+    private BigDecimal price;
 
     /**
      * количество на складе
      */
     @Column (name = "quantity")
-    private int quantity;
+    private Long quantity;
 
 }

@@ -1,62 +1,78 @@
 package ru.damir.stock.controller.dto;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import ru.damir.stock.entity.Product;
 import ru.damir.stock.service.ProductService;
 
 import java.util.List;
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
-
+    private final ProductService productService;
 
     /**
-     * Выыести весь список товаров.<br>
+     * Добавить новый товар<br>
      *
-     * @return список товаров
-     */
-    @GetMapping("/products")
-    public List<Product> showAllProducts () {
-        List<Product> allProducts = productService.getAllProducts();
-        return allProducts;
-    }
-
-    /**
-     * Отписаться от всех товаров.<br>
-     * Если пользователя не было в БД - логируем
-     *
-     * @param id Данные для поиска по id
-     * @return товар
-     */
-    @GetMapping("/products/{id}")
-    public Product getProduct (@PathVariable int id) {
-        Product product = productService.getProduct(id);
-        return product;
-    }
-
-    /**
-     * Отписаться от всех товаров.<br>
-     * Если пользователя не было в БД - логируем
-     *
-     * @param product Данные для добавления нового товаара
-     * @return статус
+     * @param request Данные для добавления нового товара
      */
     @PostMapping("/products")
-    public Product addProduct (@RequestBody Product product) {
-        productService.saveProduct(product);
-        return product;
+    public ProductDto addProduct (@Valid @RequestBody ProductDto request) {
+        return productService.addProduct(request);
     }
 
-    @DeleteMapping("/products/{id}")
-    public void deleteProduct (@PathVariable int id) {
-        productService.deleteProduct(id);
+    /**
+     * Получить все товары<br>
+     */
+    @GetMapping("/products")
+    public List<ProductDto> getAllProducts () {
+        return productService.getAllProducts();
     }
+
+    /**
+     * Получить товар по id<br>
+     *
+     * @param id Данные id для получения товаара
+     */
+    @GetMapping("/products/{id}")
+    public ProductDto getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
+    }
+
+    /**
+     * Обновить товар по id<br>
+     *
+     * @param id Данные id для изменения товаара
+     */
+    @PostMapping("/products/{id}")
+    public ProductDto updateProductById(@PathVariable Long id, @RequestBody ProductDto request) {
+        return productService.updateProduct(id, request);
+    }
+
+    /**
+     * Удалить товар по id<br>
+     *
+     * @param id Данные id для удаления товара
+     */
+    @DeleteMapping("/products/{id}")
+    public StatusResponse deleteProduct (@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return new StatusResponse("Товар успешно удален");
+    }
+
+    /**
+     * Удалить все товары<br>
+     */
+    @DeleteMapping("/products")
+    public StatusResponse deleteAll () {
+        productService.deleteAll();
+        return new StatusResponse("Товары успешно удалены");
+    }
+
 
 }
