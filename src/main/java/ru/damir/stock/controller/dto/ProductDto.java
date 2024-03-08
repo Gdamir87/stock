@@ -25,31 +25,31 @@ public class ProductDto {
     private Long id;
 
     /**
-     * наименовани товара
+     * Артикул товара
      */
     @NotBlank (message = "Артикул не может быть пустым")
     private String article;
 
     /**
-     * наименование товара
+     * Наименование товара
      */
     @NotBlank (message = "Наименование не может быть пустым")
     private String name;
 
     /**
-     * описание товара
+     * Описание товара
      */
     @NotBlank (message = "Описание товара не может быть пустым")
     private String description;
 
     /**
-     * стоимость
+     * Стоимость товара
      */
     @DecimalMin(value = "0.00001", message = "Стоимость должна быть больше нуля")
     private BigDecimal price;
 
     /**
-     * количество на складе
+     * Количество товара на складе
      */
     @NotNull (message = "Количество не может быть пустым")
     @Min(value = 1, message = "Количество должно быть больше нуля")
