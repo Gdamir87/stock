@@ -1,4 +1,4 @@
-CREATE TABLE product
+CREATE TABLE products
 (
     id          SERIAL PRIMARY KEY,
     article     VARCHAR(255) UNIQUE,
