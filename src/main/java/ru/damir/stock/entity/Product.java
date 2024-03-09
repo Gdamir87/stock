@@ -44,11 +44,11 @@ public class Product {
      */
     private Long quantity;
 
-//    /**
-//     * Количество на складе
-//     */
-//    @ToString.Exclude
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "category_id")
-//    private Category category;
+    /**
+     * Количество на складе
+     */
+    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

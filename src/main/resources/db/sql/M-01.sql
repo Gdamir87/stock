@@ -1,9 +1,9 @@
--- CREATE TABLE categories
--- (
---     id   SERIAL PRIMARY KEY,
---     name VARCHAR(255)
---
--- );
+CREATE TABLE categories
+(
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(255)
+
+);
 
 CREATE TABLE products
 (
@@ -12,7 +12,7 @@ CREATE TABLE products
     name        VARCHAR(255),
     description VARCHAR(255),
     price       DOUBLE PRECISION,
-    quantity    INT
---     category_id SERIAL REFERENCES categories (id)
+    quantity    INT,
+    category_id SERIAL REFERENCES categories (id)
 );
 

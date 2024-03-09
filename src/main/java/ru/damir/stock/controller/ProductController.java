@@ -39,7 +39,7 @@ public class ProductController {
     /**
      * Получить товар по id<br>
      *
-     * @param id Данные id для получения товаара
+     * @param id Данные id для получения товара
      */
     @GetMapping("/products/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
@@ -49,10 +49,10 @@ public class ProductController {
     /**
      * Обновить товар по id<br>
      *
-     * @param id Данные id для изменения товаара
+     * @param id Данные id для изменения товара
      */
     @PostMapping("/products/{id}")
-    public ProductDto updateProductById(@PathVariable Long id,@Valid @RequestBody ProductDto request) {
+    public ProductDto updateProductById(@PathVariable Long id, @Valid @RequestBody ProductDto request) {
         return productService.updateProduct(id, request);
     }
 
@@ -75,6 +75,4 @@ public class ProductController {
         productService.deleteAll();
         return new StatusResponse("Товары успешно удалены");
     }
-
-
 }
