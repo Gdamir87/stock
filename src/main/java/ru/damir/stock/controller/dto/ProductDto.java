@@ -35,6 +35,7 @@ public class ProductDto {
     /**
      * Стоимость товара
      */
+    @NotNull(message = "Укажите стоимость")
     @DecimalMin(value = "0.00001", message = "Стоимость должна быть больше нуля")
     private BigDecimal price;
 

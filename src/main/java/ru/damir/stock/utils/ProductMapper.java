@@ -4,6 +4,8 @@ import lombok.*;
 import ru.damir.stock.controller.dto.ProductDto;
 import ru.damir.stock.entity.Product;
 
+import java.util.List;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProductMapper {
 
@@ -25,5 +27,9 @@ public class ProductMapper {
                 .price(request.getPrice())
                 .quantity(request.getQuantity())
                 .build();
+    }
+
+    public static List<ProductDto> toDto(List<Product> products) {
+        return products.stream().map(ProductMapper::toDto).toList();
     }
 }

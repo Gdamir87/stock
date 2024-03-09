@@ -1,4 +1,4 @@
-package ru.damir.stock.controller.exception;
+package ru.damir.stock.exception;
 
 import lombok.RequiredArgsConstructor;
 

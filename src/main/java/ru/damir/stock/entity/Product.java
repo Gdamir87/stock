@@ -20,32 +20,32 @@ public class Product {
     private Long id;
 
     /**
-     * артикул товара
+     * Артикул товара
      */
     private String article;
 
     /**
-     * наименование товара
+     * Наименование товара
      */
     private String name;
 
     /**
-     * описание товара
+     * Описание товара
      */
     private String description;
 
     /**
-     * стоимость
+     * Стоимость
      */
     private BigDecimal price;
 
     /**
-     * количество на складе
+     * Количество на складе
      */
     private Long quantity;
 
 //    /**
-//     * количество на складе
+//     * Количество на складе
 //     */
 //    @ToString.Exclude
 //    @ManyToOne(cascade = CascadeType.ALL)
