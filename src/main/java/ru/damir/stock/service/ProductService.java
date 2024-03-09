@@ -33,7 +33,7 @@ public class ProductService {
         return ProductMapper.toDto(product);
     }
 
-//    @Transactional
+    //    @Transactional
     public List<ProductDto> getAllProducts() {
 
         List<Product> products = IterableUtils.toList(productRepository.findAll());
@@ -42,7 +42,7 @@ public class ProductService {
         return ProductMapper.toDto(products);
     }
 
-//    @Transactional
+    //    @Transactional
     public ProductDto getProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new MyException("Такого товара не существует"));
         return ProductMapper.toDto(product);
@@ -59,7 +59,7 @@ public class ProductService {
         return ProductMapper.toDto(product);
     }
 
-//    @Transactional
+    //    @Transactional
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
             throw new MyException("Товара с таким id не существует");
@@ -67,7 +67,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-//    @Transactional
+    //    @Transactional
     public void deleteAll() {
 
         productRepository.deleteAll();

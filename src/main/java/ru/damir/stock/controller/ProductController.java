@@ -52,7 +52,7 @@ public class ProductController {
      * @param id Данные id для изменения товаара
      */
     @PostMapping("/products/{id}")
-    public ProductDto updateProductById(@PathVariable Long id, @RequestBody ProductDto request) {
+    public ProductDto updateProductById(@PathVariable Long id,@Valid @RequestBody ProductDto request) {
         return productService.updateProduct(id, request);
     }
 
