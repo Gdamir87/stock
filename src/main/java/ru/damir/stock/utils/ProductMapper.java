@@ -9,7 +9,6 @@ public class ProductMapper {
 
     public static ProductDto toDto(Product entity) {
         return ProductDto.builder()
-                .id(entity.getId())
                 .article(entity.getArticle())
                 .name(entity.getName())
                 .description(entity.getDescription())

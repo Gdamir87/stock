@@ -54,7 +54,7 @@ class ProductServiceTest {
                 .thenReturn(Optional.of(new Product()));
 
         RuntimeException exception = Assertions.assertThrowsExactly(RuntimeException.class,
-                () -> productService.addProduct(new ProductDto()));
+                () -> productService.createProduct(new ProductDto()));
         Assertions.assertEquals("Такой товар уже существует", exception.getMessage());
     }
 }

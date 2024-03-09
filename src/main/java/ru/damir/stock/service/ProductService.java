@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.stereotype.Service;
 
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.damir.stock.controller.dto.ProductDto;
 import ru.damir.stock.controller.exception.MyException;
 import ru.damir.stock.entity.Product;
@@ -25,7 +24,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public ProductDto addProduct(ProductDto request) {
+    public ProductDto createProduct(ProductDto request) {
         if (productRepository.findByArticle(request.getArticle()).isPresent()) {
             throw new MyException("Такой товар уже существует");
         }

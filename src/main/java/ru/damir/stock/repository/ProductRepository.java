@@ -6,8 +6,7 @@ import ru.damir.stock.entity.Product;
 
 import java.util.Optional;
 
-
 @Repository
-public interface ProductRepository extends CrudRepository <Product, Long>{
+public interface ProductRepository extends CrudRepository<Product, Long> {
     Optional<Product> findByArticle(String article);
 }
