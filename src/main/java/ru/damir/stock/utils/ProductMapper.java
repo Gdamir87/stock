@@ -2,6 +2,7 @@ package ru.damir.stock.utils;
 
 import lombok.*;
 import ru.damir.stock.controller.dto.ProductDto;
+import ru.damir.stock.entity.Category;
 import ru.damir.stock.entity.Product;
 
 import java.util.List;
@@ -19,13 +20,14 @@ public class ProductMapper {
                 .build();
     }
 
-    public static Product toProduct(ProductDto request) {
+    public static Product toProduct(ProductDto request, Category category) {
         return Product.builder()
                 .article(request.getArticle())
                 .name(request.getName())
                 .description(request.getDescription())
                 .price(request.getPrice())
                 .quantity(request.getQuantity())
+                .category(category)
                 .build();
     }
 

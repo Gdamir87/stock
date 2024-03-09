@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.damir.stock.entity.Category;
 //import ru.damir.stock.entity.Category;
 
 import java.math.BigDecimal;
@@ -47,5 +48,5 @@ public class ProductDto {
     @Max(value = 1000, message = "Количество не должно быть более 999")
     private Long quantity;
 
-//    private Category category;
+    private String categoryName;
 }
