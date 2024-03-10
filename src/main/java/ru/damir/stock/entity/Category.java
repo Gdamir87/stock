@@ -18,6 +18,7 @@ public class Category {
      * Id категории
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

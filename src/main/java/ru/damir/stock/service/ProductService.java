@@ -32,26 +32,24 @@ public class ProductService {
             throw new MyException("Такой товар уже существует");
         }
         Category category = findOrCreateCategory(request.getCategoryName());
-        categoryRepository.save(category);
-        Product product = ProductMapper.toProduct(request, category);
+    //    categoryRepository.save(category); // сохраняет за счет Cascade
+        Product product = ProductMapper.toProduct(request);
+        product.setCategory(category);
         productRepository.save(product);
         return ProductMapper.toDto(product);
     }
 
-    //    @Transactional
     public List<ProductDto> getAllProducts() {
         List<Product> products = IterableUtils.toList(productRepository.findAll());
         if (products.isEmpty()) throw new MyException("Список товаров пуст");
         return ProductMapper.toDto(products);
     }
 
-    //    @Transactional
     public ProductDto getProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new MyException("Такого товара не существует"));
         return ProductMapper.toDto(product);
     }
 
-    @Transactional
     public ProductDto updateProduct(Long id, ProductDto request) {
         Product product = productRepository.findById(id).orElseThrow(() -> new MyException("Такого товара не существует"));
         product.setArticle(request.getArticle());
@@ -62,7 +60,7 @@ public class ProductService {
         return ProductMapper.toDto(product);
     }
 
-    //    @Transactional
+
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
             throw new MyException("Товара с таким id не существует");
@@ -70,7 +68,6 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    //    @Transactional
     public void deleteAll() {
         productRepository.deleteAll();
     }

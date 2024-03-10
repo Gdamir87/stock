@@ -48,5 +48,6 @@ public class ProductDto {
     @Max(value = 1000, message = "Количество не должно быть более 999")
     private Long quantity;
 
+    @NotBlank(message = "Укажите название категории")
     private String categoryName;
 }
