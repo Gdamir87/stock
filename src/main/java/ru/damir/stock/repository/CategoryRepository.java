@@ -2,11 +2,11 @@ package ru.damir.stock.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.damir.stock.entity.Product;
+import ru.damir.stock.entity.Category;
 
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
-    Optional<Product> findByArticle(String article);
+public interface CategoryRepository extends CrudRepository<Category, Long>{
+    Optional<Category> findByName(String categoryName);
 }

@@ -8,10 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.stereotype.Service;
 
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.damir.stock.controller.dto.ProductDto;
-import ru.damir.stock.controller.exception.MyException;
+import ru.damir.stock.entity.Category;
+import ru.damir.stock.exception.MyException;
 import ru.damir.stock.entity.Product;
+import ru.damir.stock.repository.CategoryRepository;
 import ru.damir.stock.repository.ProductRepository;
 import ru.damir.stock.utils.ProductMapper;
 
@@ -23,34 +24,32 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
-    public ProductDto addProduct(ProductDto request) {
+    public ProductDto createProduct(ProductDto request) {
         if (productRepository.findByArticle(request.getArticle()).isPresent()) {
             throw new MyException("Такой товар уже существует");
         }
+        Category category = findOrCreateCategory(request.getCategoryName());
+    //    categoryRepository.save(category); // сохраняет за счет Cascade
         Product product = ProductMapper.toProduct(request);
+        product.setCategory(category);
         productRepository.save(product);
         return ProductMapper.toDto(product);
     }
 
-    @Transactional
     public List<ProductDto> getAllProducts() {
-
-        dataExistChecking();
         List<Product> products = IterableUtils.toList(productRepository.findAll());
-        List<ProductDto> productDtos = products.stream().map(ProductMapper::toDto).toList();
-        return productDtos;
+        if (products.isEmpty()) throw new MyException("Список товаров пуст");
+        return ProductMapper.toDto(products);
     }
 
-    @Transactional
     public ProductDto getProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new MyException("Такого товара не существует"));
-        ProductDto productDto = ProductMapper.toDto(product);
-        return productDto;
+        return ProductMapper.toDto(product);
     }
 
-    @Transactional
     public ProductDto updateProduct(Long id, ProductDto request) {
         Product product = productRepository.findById(id).orElseThrow(() -> new MyException("Такого товара не существует"));
         product.setArticle(request.getArticle());
@@ -61,7 +60,7 @@ public class ProductService {
         return ProductMapper.toDto(product);
     }
 
-    @Transactional
+
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
             throw new MyException("Товара с таким id не существует");
@@ -69,20 +68,14 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    @Transactional
     public void deleteAll() {
-
-        dataExistChecking();
         productRepository.deleteAll();
     }
 
-    @Transactional
-    public void dataExistChecking() {
-        Iterable<Product> all = productRepository.findAll();
-        if (IterableUtils.toList(all).isEmpty()) {
-            throw new MyException("Список товаров пуст");
-        }
+    private Category findOrCreateCategory(String categoryName) {
+        return categoryRepository.findByName(categoryName)
+                .orElseGet(() -> Category.builder()
+                        .name(categoryName)
+                        .build());
     }
-
-
 }

@@ -1,9 +1,11 @@
-package ru.damir.stock.controller.dto;
+package ru.damir.stock.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.damir.stock.controller.dto.ProductDto;
+import ru.damir.stock.controller.dto.StatusResponse;
 import ru.damir.stock.service.ProductService;
 
 import java.util.List;
@@ -22,22 +24,22 @@ public class ProductController {
      * @param request Данные для добавления нового товара
      */
     @PostMapping("/products")
-    public ProductDto addProduct (@Valid @RequestBody ProductDto request) {
-        return productService.addProduct(request);
+    public ProductDto createProduct(@Valid @RequestBody ProductDto request) {
+        return productService.createProduct(request);
     }
 
     /**
-     * Получить все товары<br>
+     * Получить все товары
      */
     @GetMapping("/products")
-    public List<ProductDto> getAllProducts () {
+    public List<ProductDto> getAllProducts() {
         return productService.getAllProducts();
     }
 
     /**
      * Получить товар по id<br>
      *
-     * @param id Данные id для получения товаара
+     * @param id Данные id для получения товара
      */
     @GetMapping("/products/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
@@ -47,10 +49,10 @@ public class ProductController {
     /**
      * Обновить товар по id<br>
      *
-     * @param id Данные id для изменения товаара
+     * @param id Данные id для изменения товара
      */
     @PostMapping("/products/{id}")
-    public ProductDto updateProductById(@PathVariable Long id, @RequestBody ProductDto request) {
+    public ProductDto updateProductById(@PathVariable Long id, @Valid @RequestBody ProductDto request) {
         return productService.updateProduct(id, request);
     }
 
@@ -60,19 +62,17 @@ public class ProductController {
      * @param id Данные id для удаления товара
      */
     @DeleteMapping("/products/{id}")
-    public StatusResponse deleteProduct (@PathVariable Long id) {
+    public StatusResponse deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return new StatusResponse("Товар успешно удален");
     }
 
     /**
-     * Удалить все товары<br>
+     * Удалить все товары
      */
     @DeleteMapping("/products")
-    public StatusResponse deleteAll () {
+    public StatusResponse deleteAll() {
         productService.deleteAll();
         return new StatusResponse("Товары успешно удалены");
     }
-
-
 }

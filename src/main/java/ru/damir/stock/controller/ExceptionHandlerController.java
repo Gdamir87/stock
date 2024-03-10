@@ -1,16 +1,14 @@
 package ru.damir.stock.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.antlr.v4.runtime.atn.ErrorInfo;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.*;
-import org.springframework.validation.method.MethodValidationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ru.damir.stock.controller.exception.MyException;
+import ru.damir.stock.exception.MyException;
 
 import java.util.Set;
 import java.util.stream.Collectors;

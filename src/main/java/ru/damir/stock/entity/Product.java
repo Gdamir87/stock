@@ -1,11 +1,7 @@
 package ru.damir.stock.entity;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -14,44 +10,45 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table (name = "product")
+@Table(name = "products")
 public class Product {
     /**
-     * id
+     * id продукта
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "id")
     private Long id;
 
     /**
-     * артикул товара
+     * Артикул товара
      */
-    @Column (name = "article")
     private String article;
 
     /**
-     * наименование товара
+     * Наименование товара
      */
-    @Column (name = "name")
     private String name;
 
     /**
-     * описание товара
+     * Описание товара
      */
-    @Column (name = "description")
     private String description;
 
     /**
-     * стоимость
+     * Стоимость
      */
-    @Column (name = "price")
     private BigDecimal price;
 
     /**
-     * количество на складе
+     * Количество на складе
      */
-    @Column (name = "quantity")
     private Long quantity;
 
+    /**
+     * Количество на складе
+     */
+    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

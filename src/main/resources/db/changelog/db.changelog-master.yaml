@@ -1,9 +1,8 @@
 databaseChangeLog:
-  - logicalFilePath: db/sql/M-01.sql
   - changeSet:
-      id : 1
+      id: 1
       author: Damir Gaifulin
-      comment: first ini tables
+      comment: first init tables
       changes:
         - sqlFile:
             path: db/sql/M-01.sql
