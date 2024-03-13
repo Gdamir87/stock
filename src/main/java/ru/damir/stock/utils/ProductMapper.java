@@ -1,10 +1,8 @@
 package ru.damir.stock.utils;
 
-import jdk.jfr.Category;
 import lombok.*;
 import ru.damir.stock.controller.dto.ProductDto;
 import ru.damir.stock.entity.Product;
-import ru.damir.stock.repository.CategoryRepository;
 
 import java.util.List;
 

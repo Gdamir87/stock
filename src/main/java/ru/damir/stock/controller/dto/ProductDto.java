@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.damir.stock.entity.Category;
-//import ru.damir.stock.entity.Category;
 
 import java.math.BigDecimal;
 
