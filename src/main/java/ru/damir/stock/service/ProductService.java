@@ -8,12 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.stereotype.Service;
 
+import ru.damir.stock.controller.dto.CategoryDto;
 import ru.damir.stock.controller.dto.ProductDto;
 import ru.damir.stock.entity.Category;
 import ru.damir.stock.exception.MyException;
 import ru.damir.stock.entity.Product;
 import ru.damir.stock.repository.CategoryRepository;
 import ru.damir.stock.repository.ProductRepository;
+import ru.damir.stock.utils.CategoryMapper;
 import ru.damir.stock.utils.ProductMapper;
 
 import java.util.List;
@@ -31,8 +33,9 @@ public class ProductService {
         if (productRepository.findByArticle(request.getArticle()).isPresent()) {
             throw new MyException("Такой товар уже существует");
         }
-        Category category = findOrCreateCategory(request.getCategoryName());
-    //    categoryRepository.save(category); // сохраняет за счет Cascade
+        String categoryName = request.getCategoryName();
+        Category category = categoryRepository.findByName(categoryName)
+                .orElseThrow(() -> new MyException("Такой категории не существует"));
         Product product = ProductMapper.toProduct(request);
         product.setCategory(category);
         productRepository.save(product);
@@ -50,6 +53,7 @@ public class ProductService {
         return ProductMapper.toDto(product);
     }
 
+    @Transactional
     public ProductDto updateProduct(Long id, ProductDto request) {
         Product product = productRepository.findById(id).orElseThrow(() -> new MyException("Такого товара не существует"));
         product.setArticle(request.getArticle());
@@ -60,7 +64,7 @@ public class ProductService {
         return ProductMapper.toDto(product);
     }
 
-
+    @Transactional
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
             throw new MyException("Товара с таким id не существует");
@@ -72,10 +76,4 @@ public class ProductService {
         productRepository.deleteAll();
     }
 
-    private Category findOrCreateCategory(String categoryName) {
-        return categoryRepository.findByName(categoryName)
-                .orElseGet(() -> Category.builder()
-                        .name(categoryName)
-                        .build());
-    }
 }

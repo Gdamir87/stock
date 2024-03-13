@@ -1,21 +1,16 @@
-package ru.damir.stock.entity;
+package ru.damir.stock.controller.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "categories")
-public class Category {
-
+public class CategoryDto {
     /**
      * Id категории
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
@@ -23,3 +18,4 @@ public class Category {
      */
     private String name;
 }
+
