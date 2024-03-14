@@ -72,7 +72,6 @@ public class ProductService {
 
     @Transactional
     public ProductDto updateHandler(Product product,ProductDto productDto) {
-
         if (StringUtils.isBlank(productDto.getArticle()))
             productDto.setArticle(product.getArticle());
         if (StringUtils.isBlank(productDto.getName()))
