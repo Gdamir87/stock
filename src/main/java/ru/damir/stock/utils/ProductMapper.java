@@ -2,6 +2,7 @@ package ru.damir.stock.utils;
 
 import lombok.*;
 import ru.damir.stock.controller.dto.ProductDto;
+
 import ru.damir.stock.entity.Product;
 
 import java.util.List;
@@ -37,4 +38,5 @@ public class ProductMapper {
                 .map(ProductMapper::toDto)
                 .toList();
     }
+
 }
