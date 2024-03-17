@@ -15,6 +15,7 @@ import ru.damir.stock.exception.MyException;
 import ru.damir.stock.entity.Product;
 import ru.damir.stock.repository.CategoryRepository;
 import ru.damir.stock.repository.ProductRepository;
+import ru.damir.stock.utils.Utils;
 import ru.damir.stock.utils.ProductMapper;
 
 import java.util.List;
@@ -60,11 +61,7 @@ public class ProductService {
         Category category = categoryRepository.findByName(productDto.getCategoryName())
                 .orElseThrow(() -> new MyException("Такой категории не существует"));
         ProductDto updatedDto = updateHandler(product, productDto);
-        product.setArticle(updatedDto.getArticle());
-        product.setName(updatedDto.getName());
-        product.setDescription(updatedDto.getDescription());
-        product.setPrice(updatedDto.getPrice());
-        product.setQuantity(updatedDto.getQuantity());
+        Utils.fillProduct(product, updatedDto);
         product.setCategory(category);
         productRepository.save(product);
         return ProductMapper.toDto(product);
