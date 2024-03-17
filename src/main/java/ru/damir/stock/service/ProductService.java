@@ -31,6 +31,7 @@ public class ProductService {
     @Transactional
     public ProductDto createProduct(ProductDto productDto) {
         if (productRepository.findByArticle(productDto.getArticle()).isPresent()) {
+            log.error("Current product {} is exists", productDto);
             throw new MyException("Такой товар уже существует");
         }
         String categoryName = productDto.getCategoryName();
@@ -87,6 +88,7 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
+            log.error("Product with id {} doesn't exists", id);
             throw new MyException("Товара с таким id не существует");
         }
         productRepository.deleteById(id);
