@@ -53,7 +53,10 @@ public class ProductService {
      */
     public List<ProductDto> getAllProducts() {
         List<Product> products = IterableUtils.toList(productRepository.findAll());
-        if (products.isEmpty()) throw new ProductNotExistException("Список товаров пуст");
+        if (products.isEmpty()) {
+            log.error("Products list is empty");
+            throw new ProductNotExistException("Список товаров пуст");
+        }
         return ProductMapper.toDto(products);
     }
 
@@ -103,10 +106,12 @@ public class ProductService {
             throw new ProductNotExistException("Товара с таким id не существует");
         }
         productRepository.deleteById(id);
+        log.info("Product with id {} was deleted", id);
     }
 
     public void deleteAll() {
         productRepository.deleteAll();
+        log.info("All products was deleted");
     }
 
 }
