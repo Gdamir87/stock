@@ -41,9 +41,7 @@ public class ProductService {
             log.error("Current product {} is exists", productDto);
             throw new ProductExistException("Такой товар уже существует");
         }
-        String categoryName = productDto.getCategoryName();
-        Category category = categoryRepository.findByName(categoryName)
-                .orElseThrow(() -> new CategoryNotExistException("Категории с таким названием не существует"));
+        Category category = getCategory(productDto);
         Product product = ProductMapper.toProduct(productDto);
         product.setCategory(category);
         productRepository.save(product);
@@ -83,7 +81,6 @@ public class ProductService {
         Product product = productGetter(id); // todo сделать через ProductService.get().
         //Product product = ProductMapper.toProduct(get(id)); // todo Конфликт бина, создается новый экземпляр
         Category category = getCategory(productDto);
-        Utils.updateHandler(product, productDto);
         Utils.fillProduct(product, productDto);
         product.setCategory(category);
         productRepository.save(product);

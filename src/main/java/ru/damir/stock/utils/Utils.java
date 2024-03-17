@@ -8,15 +8,8 @@ import ru.damir.stock.entity.Product;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Utils {
-    public static void fillProduct(Product product, ProductDto productDto) {
-        product.setArticle(productDto.getArticle());
-        product.setName(productDto.getName());
-        product.setDescription(productDto.getDescription());
-        product.setPrice(productDto.getPrice());
-        product.setQuantity(productDto.getQuantity());
-    }
 
-    public static void updateHandler(Product product,ProductDto productDto) {
+    public static void fillProduct(Product product,ProductDto productDto) {
         if (StringUtils.isBlank(productDto.getArticle()))
             productDto.setArticle(product.getArticle());
         if (StringUtils.isBlank(productDto.getName()))
@@ -29,6 +22,10 @@ public class Utils {
             productDto.setQuantity(product.getQuantity());
         if (StringUtils.isBlank(productDto.getCategoryName()))
             productDto.setCategoryName(product.getCategory().getName());
-        //return productDto;
+        product.setArticle(productDto.getArticle());
+        product.setName(productDto.getName());
+        product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
+        product.setQuantity(productDto.getQuantity());
     }
 }
