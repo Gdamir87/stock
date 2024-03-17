@@ -1,10 +1,9 @@
 package ru.damir.stock.utils;
 
-import jdk.jfr.Category;
 import lombok.*;
 import ru.damir.stock.controller.dto.ProductDto;
+
 import ru.damir.stock.entity.Product;
-import ru.damir.stock.repository.CategoryRepository;
 
 import java.util.List;
 
@@ -35,6 +34,9 @@ public class ProductMapper {
 
     public static List<ProductDto> toDto(List<Product> products) {
 
-        return products.stream().map(ProductMapper::toDto).toList();
+        return products.stream()
+                .map(ProductMapper::toDto)
+                .toList();
     }
+
 }

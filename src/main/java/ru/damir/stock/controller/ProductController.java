@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/")
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -23,7 +23,7 @@ public class ProductController {
      *
      * @param request Данные для добавления нового товара
      */
-    @PostMapping("/products")
+    @PostMapping
     public ProductDto createProduct(@Valid @RequestBody ProductDto request) {
         return productService.createProduct(request);
     }
@@ -31,7 +31,7 @@ public class ProductController {
     /**
      * Получить все товары
      */
-    @GetMapping("/products")
+    @GetMapping
     public List<ProductDto> getAllProducts() {
         return productService.getAllProducts();
     }
@@ -41,7 +41,7 @@ public class ProductController {
      *
      * @param id Данные id для получения товара
      */
-    @GetMapping("/products/{id}")
+    @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
@@ -51,9 +51,9 @@ public class ProductController {
      *
      * @param id Данные id для изменения товара
      */
-    @PostMapping("/products/{id}")
-    public ProductDto updateProductById(@PathVariable Long id, @Valid @RequestBody ProductDto request) {
-        return productService.updateProduct(id, request);
+    @PostMapping("/{id}")
+    public ProductDto updateProductById(@PathVariable Long id, @RequestBody ProductDto productDto) {
+        return productService.productUpdate(id, productDto);
     }
 
     /**
@@ -61,7 +61,7 @@ public class ProductController {
      *
      * @param id Данные id для удаления товара
      */
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/{id}")
     public StatusResponse deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return new StatusResponse("Товар успешно удален");
@@ -70,7 +70,7 @@ public class ProductController {
     /**
      * Удалить все товары
      */
-    @DeleteMapping("/products")
+    @DeleteMapping
     public StatusResponse deleteAll() {
         productService.deleteAll();
         return new StatusResponse("Товары успешно удалены");

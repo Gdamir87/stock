@@ -45,7 +45,7 @@ class ProductServiceTest {
                 .thenReturn(Optional.empty());
 
         Assertions.assertThrowsExactly(RuntimeException.class,
-                () -> productService.updateProduct(null, null));
+                () -> productService.updateHandler(null, null));
     }
 
     @Test

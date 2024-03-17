@@ -3,9 +3,6 @@ package ru.damir.stock.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Data
 @Builder
@@ -25,12 +22,4 @@ public class Category {
      * Название категории
      */
     private String name;
-
-    /**
-     * Список товаров
-     */
-    @Builder.Default
-    @ToString.Exclude
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Product> products = new ArrayList<>();
 }
