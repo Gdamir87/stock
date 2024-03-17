@@ -7,12 +7,12 @@ import ru.damir.stock.entity.Product;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Utils {
-    public static Product fillProduct(Product product, ProductDto productDto) {
+    public static void fillProduct(Product product, ProductDto productDto) {
         product.setArticle(productDto.getArticle());
         product.setName(productDto.getName());
         product.setDescription(productDto.getDescription());
         product.setPrice(productDto.getPrice());
         product.setQuantity(productDto.getQuantity());
-        return product;
+        //return product;
     }
 }

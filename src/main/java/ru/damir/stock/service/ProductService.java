@@ -19,6 +19,7 @@ import ru.damir.stock.utils.Utils;
 import ru.damir.stock.utils.ProductMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -57,10 +58,23 @@ public class ProductService {
 
     @Transactional
     public ProductDto productUpdate(Long id, ProductDto productDto) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new MyException("Такого товара не существует"));
-        Category category = categoryRepository.findByName(productDto.getCategoryName())
-                .orElseThrow(() -> new MyException("Такой категории не существует"));
+//        Product product = productRepository.findById(id)
+//                .orElseThrow(() -> new MyException("Такого товара не существует"));
+        Optional <Product> productOptional = productRepository.findById(id);
+        if (productOptional.isEmpty()) {
+            log.error("Product with id {} doesn't exist", id);
+            throw new MyException("Товара с таким id не существует");
+        }
+        Product product = productOptional.get();
+
+        Optional <Category> categoryOptional = categoryRepository.findByName(productDto.getCategoryName());
+        if (categoryOptional.isEmpty()) {
+            log.error("Category {} doesn't exist", productDto.getCategoryName());
+            throw new MyException("Категории с таким названием не существует");
+        }
+//        Category category = categoryRepository.findByName(productDto.getCategoryName())
+//                .orElseThrow(() -> new MyException("Такой категории не существует"));
+        Category category = categoryOptional.get();
         ProductDto updatedDto = updateHandler(product, productDto);
         Utils.fillProduct(product, updatedDto);
         product.setCategory(category);
