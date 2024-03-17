@@ -68,8 +68,8 @@ public class ProductService {
     public ProductDto update(Long id, ProductDto productDto) {
         Product product = productGetter(id);
         Category category = getCategory(productDto);
-        ProductDto updatedDto = updateHandler(product, productDto);
-        Utils.fillProduct(product, updatedDto);
+        Utils.updateHandler(product, productDto);
+        Utils.fillProduct(product, productDto);
         product.setCategory(category);
         productRepository.save(product);
         return ProductMapper.toDto(product);
@@ -82,23 +82,6 @@ public class ProductService {
             throw new MyException("Категории с таким названием не существует");
         }
         return categoryOptional.get();
-    }
-
-    @Transactional // todo необходима ли аннотация?
-    public ProductDto updateHandler(Product product,ProductDto productDto) {
-        if (StringUtils.isBlank(productDto.getArticle()))
-            productDto.setArticle(product.getArticle());
-        if (StringUtils.isBlank(productDto.getName()))
-            productDto.setName(product.getName());
-        if ((StringUtils.isBlank(productDto.getDescription())) && (!StringUtils.isBlank(product.getDescription())))
-            productDto.setDescription(product.getDescription());
-        if ((productDto.getPrice() == null) || (productDto.getPrice().signum() < 1))
-            productDto.setPrice(product.getPrice());
-        if ((productDto.getQuantity() == null) || (productDto.getQuantity() < 1))
-            productDto.setQuantity(product.getQuantity());
-        if (StringUtils.isBlank(productDto.getCategoryName()))
-            productDto.setCategoryName(product.getCategory().getName());
-        return productDto;
     }
 
     @Transactional
