@@ -79,6 +79,12 @@ public class ProductService {
         return productOptional.get();
     }
 
+    /**
+     * Получить товар по id<br>
+     *
+     * @param id Данные id для получения товара<br>
+     * @param productDto Данные для обновления
+     */
     @Transactional
     public ProductDto update(Long id, ProductDto productDto) {
         Product product = productGetter(id); // todo сделать через ProductService.get().
@@ -90,6 +96,11 @@ public class ProductService {
         return ProductMapper.toDto(product);
     }
 
+    /**
+     * Получить категорию по названию<br>
+     *
+     * @param productDto Данные для поиска из запроса
+     */
     private Category getCategory(ProductDto productDto) {
         Optional <Category> categoryOptional = categoryRepository.findByName(productDto.getCategoryName());
         if (categoryOptional.isEmpty()) {
@@ -99,6 +110,11 @@ public class ProductService {
         return categoryOptional.get();
     }
 
+    /**
+     * Удалить товар по id<br>
+     *
+     * @param id Данные id для получения товара
+     */
     @Transactional
     public void delete(Long id) {
         if (!productRepository.existsById(id)) {
@@ -109,6 +125,9 @@ public class ProductService {
         log.info("Product with id {} was deleted", id);
     }
 
+    /**
+     * Удалить все товары
+     */
     public void deleteAll() {
         productRepository.deleteAll();
         log.info("All products was deleted");
