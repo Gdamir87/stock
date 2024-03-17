@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.damir.stock.controller.dto.ProductDto;
 import ru.damir.stock.entity.Product;
 import ru.damir.stock.repository.ProductRepository;
+import ru.damir.stock.utils.Utils;
 
 import java.util.Optional;
 
@@ -45,7 +46,7 @@ class ProductServiceTest {
                 .thenReturn(Optional.empty());
 
         Assertions.assertThrowsExactly(RuntimeException.class,
-                () -> productService.updateHandler(null, null));
+                () -> Utils.updateHandler(null, null));
     }
 
     @Test
