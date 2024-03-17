@@ -30,14 +30,14 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public ProductDto createProduct(ProductDto productDto) {
+    public ProductDto create(ProductDto productDto) {
         if (productRepository.findByArticle(productDto.getArticle()).isPresent()) {
             log.error("Current product {} is exists", productDto);
             throw new MyException("Такой товар уже существует");
         }
         String categoryName = productDto.getCategoryName();
         Category category = categoryRepository.findByName(categoryName)
-                .orElseThrow(() -> new MyException("Такой категории не существует"));
+                .orElseThrow(() -> new MyException("Категории с таким названием не существует"));
         Product product = ProductMapper.toProduct(productDto);
         product.setCategory(category);
         productRepository.save(product);
@@ -50,31 +50,24 @@ public class ProductService {
         return ProductMapper.toDto(products);
     }
 
-    public ProductDto getProductById(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new MyException("Такого товара не существует"));
+    public ProductDto get(Long id) {
+        Product product = productGetter(id);
         return ProductMapper.toDto(product);
     }
 
-    @Transactional
-    public ProductDto productUpdate(Long id, ProductDto productDto) {
-//        Product product = productRepository.findById(id)
-//                .orElseThrow(() -> new MyException("Такого товара не существует"));
+    private Product productGetter(Long id) {
         Optional <Product> productOptional = productRepository.findById(id);
         if (productOptional.isEmpty()) {
             log.error("Product with id {} doesn't exist", id);
             throw new MyException("Товара с таким id не существует");
         }
-        Product product = productOptional.get();
+        return productOptional.get();
+    }
 
-        Optional <Category> categoryOptional = categoryRepository.findByName(productDto.getCategoryName());
-        if (categoryOptional.isEmpty()) {
-            log.error("Category {} doesn't exist", productDto.getCategoryName());
-            throw new MyException("Категории с таким названием не существует");
-        }
-//        Category category = categoryRepository.findByName(productDto.getCategoryName())
-//                .orElseThrow(() -> new MyException("Такой категории не существует"));
-        Category category = categoryOptional.get();
+    @Transactional
+    public ProductDto update(Long id, ProductDto productDto) {
+        Product product = productGetter(id);
+        Category category = getCategory(productDto);
         ProductDto updatedDto = updateHandler(product, productDto);
         Utils.fillProduct(product, updatedDto);
         product.setCategory(category);
@@ -82,7 +75,16 @@ public class ProductService {
         return ProductMapper.toDto(product);
     }
 
-    @Transactional
+    private Category getCategory(ProductDto productDto) {
+        Optional <Category> categoryOptional = categoryRepository.findByName(productDto.getCategoryName());
+        if (categoryOptional.isEmpty()) {
+            log.error("Category {} doesn't exist", productDto.getCategoryName());
+            throw new MyException("Категории с таким названием не существует");
+        }
+        return categoryOptional.get();
+    }
+
+    @Transactional // todo необходима ли аннотация?
     public ProductDto updateHandler(Product product,ProductDto productDto) {
         if (StringUtils.isBlank(productDto.getArticle()))
             productDto.setArticle(product.getArticle());
@@ -100,7 +102,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteProduct(Long id) {
+    public void delete(Long id) {
         if (!productRepository.existsById(id)) {
             log.error("Product with id {} doesn't exists", id);
             throw new MyException("Товара с таким id не существует");

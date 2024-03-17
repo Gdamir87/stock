@@ -25,7 +25,7 @@ public class ProductController {
      */
     @PostMapping
     public ProductDto createProduct(@Valid @RequestBody ProductDto request) {
-        return productService.createProduct(request);
+        return productService.create(request);
     }
 
     /**
@@ -43,7 +43,7 @@ public class ProductController {
      */
     @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+        return productService.get(id);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ProductController {
      */
     @PostMapping("/{id}")
     public ProductDto updateProductById(@PathVariable Long id, @RequestBody ProductDto productDto) {
-        return productService.productUpdate(id, productDto);
+        return productService.update(id, productDto);
     }
 
     /**
@@ -63,7 +63,7 @@ public class ProductController {
      */
     @DeleteMapping("/{id}")
     public StatusResponse deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+        productService.delete(id);
         return new StatusResponse("Товар успешно удален");
     }
 
