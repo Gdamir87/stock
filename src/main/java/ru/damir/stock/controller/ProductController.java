@@ -25,7 +25,8 @@ public class ProductController {
      */
     @PostMapping
     public ProductDto createProduct(@Valid @RequestBody ProductDto request) {
-        return productService.createProduct(request);
+        log.info("Request to create new product");
+        return productService.create(request);
     }
 
     /**
@@ -33,6 +34,7 @@ public class ProductController {
      */
     @GetMapping
     public List<ProductDto> getAllProducts() {
+        log.info("Request to get all products");
         return productService.getAllProducts();
     }
 
@@ -43,7 +45,8 @@ public class ProductController {
      */
     @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+        log.info("Request to get product with id {}", id);
+        return productService.get(id);
     }
 
     /**
@@ -53,7 +56,8 @@ public class ProductController {
      */
     @PostMapping("/{id}")
     public ProductDto updateProductById(@PathVariable Long id, @RequestBody ProductDto productDto) {
-        return productService.productUpdate(id, productDto);
+        log.info("Request to update product with id {}", id);
+        return productService.update(id, productDto);
     }
 
     /**
@@ -63,7 +67,8 @@ public class ProductController {
      */
     @DeleteMapping("/{id}")
     public StatusResponse deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+        log.info("Request to delete product with id {}", id);
+        productService.delete(id);
         return new StatusResponse("Товар успешно удален");
     }
 
@@ -72,6 +77,7 @@ public class ProductController {
      */
     @DeleteMapping
     public StatusResponse deleteAll() {
+        log.info("Request to delete all products");
         productService.deleteAll();
         return new StatusResponse("Товары успешно удалены");
     }

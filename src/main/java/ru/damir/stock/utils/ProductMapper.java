@@ -7,6 +7,7 @@ import ru.damir.stock.entity.Product;
 
 import java.util.List;
 
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProductMapper {
 

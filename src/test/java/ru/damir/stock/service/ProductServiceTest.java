@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.damir.stock.controller.dto.ProductDto;
 import ru.damir.stock.entity.Product;
 import ru.damir.stock.repository.ProductRepository;
+import ru.damir.stock.utils.Utils;
 
 import java.util.Optional;
 
@@ -45,7 +46,7 @@ class ProductServiceTest {
                 .thenReturn(Optional.empty());
 
         Assertions.assertThrowsExactly(RuntimeException.class,
-                () -> productService.updateHandler(null, null));
+                () -> Utils.fillProduct(null, null));
     }
 
     @Test
@@ -54,7 +55,7 @@ class ProductServiceTest {
                 .thenReturn(Optional.of(new Product()));
 
         RuntimeException exception = Assertions.assertThrowsExactly(RuntimeException.class,
-                () -> productService.createProduct(new ProductDto()));
+                () -> productService.create(new ProductDto()));
         Assertions.assertEquals("Такой товар уже существует", exception.getMessage());
     }
 }
