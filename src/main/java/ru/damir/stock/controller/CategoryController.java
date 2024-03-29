@@ -1,7 +1,6 @@
 package ru.damir.stock.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -59,8 +58,7 @@ public class CategoryController {
     @DeleteMapping("/delete/{id}")
     public StatusResponse delete(@PathVariable Long id) {
         log.info("[API] Request to delete category with id {}", id);
-        categoryService.delete(id);
-        return new StatusResponse("Категория успешно удалена");
+        return categoryService.delete(id);
     }
 
     /**
@@ -70,7 +68,6 @@ public class CategoryController {
     @DeleteMapping
     public StatusResponse deleteAll() {
         log.info("[API] Request to delete all categories");
-        categoryService.deleteAll();
-        return new StatusResponse("Категории успешно удалены");
+        return categoryService.deleteAll();
     }
 }

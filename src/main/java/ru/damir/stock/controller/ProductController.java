@@ -68,8 +68,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public StatusResponse delete(@PathVariable Long id) {
         log.info("[API] Request to delete product with id {}", id);
-        productService.delete(id);
-        return new StatusResponse("Товар успешно удален");
+        return productService.delete(id);
     }
 
     /**
@@ -79,7 +78,6 @@ public class ProductController {
     @DeleteMapping
     public StatusResponse deleteAll() {
         log.info("[API] Request to delete all products");
-        productService.deleteAll();
-        return new StatusResponse("Товары успешно удалены");
+        return productService.deleteAll();
     }
 }

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.damir.stock.dto.CategoryDto;
 import ru.damir.stock.dto.ProductDto;
+import ru.damir.stock.dto.StatusResponse;
 import ru.damir.stock.entity.Category;
 import ru.damir.stock.exception.CategoryNotExistException;
 import ru.damir.stock.repository.CategoryRepository;
@@ -33,13 +34,13 @@ public class CategoryService {
      * @param productDto Данные для поиска из запроса
      */
     @Transactional
-    public CategoryDto find(ProductDto productDto) {
+    public Category findCategory(ProductDto productDto) {
         Optional<Category> categoryOptional = categoryRepository.findByName(productDto.getCategoryName());
         if (categoryOptional.isEmpty()) {
             log.error("Category {} doesn't exist", productDto.getCategoryName());
             throw new CategoryNotExistException("Категории с таким названием не существует");
         }
-        return CategoryMapper.toDto(categoryOptional.get());
+        return categoryOptional.get();
     }
 
     @Transactional
@@ -60,14 +61,16 @@ public class CategoryService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public StatusResponse delete(Long id) {
         categoryRepository.deleteById(id);
         log.info("Product with id {} was deleted", id);
+        return new StatusResponse("Категория успешно удалена");
     }
 
     @Transactional
-    public void deleteAll() {
+    public StatusResponse deleteAll() {
         categoryRepository.deleteAll();
         log.info("All categories was deleted");
+        return new StatusResponse("Категории успешно удалены");
     }
 }
