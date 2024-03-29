@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.stereotype.Service;
 
+import ru.damir.stock.dto.CategoryDto;
 import ru.damir.stock.dto.ProductDto;
 import ru.damir.stock.entity.Category;
 import ru.damir.stock.exception.CategoryNotExistException;
@@ -16,6 +17,7 @@ import ru.damir.stock.exception.ProductExistException;
 import ru.damir.stock.exception.ProductNotExistException;
 import ru.damir.stock.repository.CategoryRepository;
 import ru.damir.stock.repository.ProductRepository;
+import ru.damir.stock.utils.CategoryMapper;
 import ru.damir.stock.utils.ProductMapper;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
     /**
      * Получить товар по id<br>
@@ -65,11 +68,11 @@ public class ProductService {
      * @param id Данные id для получения товара
      */
     public ProductDto getById(Long id) {
-        Product product = productGetter(id);
+        Product product = find(id);
         return ProductMapper.toDto(product);
     }
 
-    private Product productGetter(Long id) {
+    private Product find(Long id) {
         Optional <Product> productOptional = productRepository.findById(id);
         if (productOptional.isEmpty()) {
             log.error("Product with id {} doesn't exist", id);
@@ -86,27 +89,15 @@ public class ProductService {
      */
     @Transactional
     public ProductDto update(Long id, ProductDto productDto) {
-        Product product = productGetter(id); // todo сделать через ProductService.get().
+        CategoryDto categoryDto = categoryService.find(productDto);
+
+        Product product = find(id); // todo сделать через ProductService.get().
         //Product product = ProductMapper.toProduct(get(id)); // todo Конфликт бина, создается новый экземпляр
-        Category category = getCategory(productDto);
+
         ProductMapper.fillProduct(product, productDto);
-        product.setCategory(category);
+        product.setCategory(CategoryMapper.toEntity(categoryDto));
         productRepository.save(product);
         return ProductMapper.toDto(product);
-    }
-
-    /**
-     * Получить категорию по названию<br>
-     *
-     * @param productDto Данные для поиска из запроса
-     */
-    private Category getCategory(ProductDto productDto) {
-        Optional <Category> categoryOptional = categoryRepository.findByName(productDto.getCategoryName());
-        if (categoryOptional.isEmpty()) {
-            log.error("Category {} doesn't exist", productDto.getCategoryName());
-            throw new CategoryNotExistException("Категории с таким названием не существует");
-        }
-        return categoryOptional.get();
     }
 
     /**
