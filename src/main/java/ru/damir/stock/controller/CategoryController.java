@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.damir.stock.dto.CategoryDto;
 import ru.damir.stock.dto.StatusResponse;
-import ru.damir.stock.entity.Category;
 import ru.damir.stock.service.CategoryService;
 
 import java.util.List;
@@ -19,61 +18,58 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     /**
-     * Создание новой роли
-     *
+     * Создание новой категории
      * @param categoryDto Новая категория
      * @return categoryDto
      */
     @PostMapping("/create")
     public CategoryDto create(@Valid @RequestBody CategoryDto categoryDto) {
-        log.info("[API] start create new role {}", categoryDto);
+        log.info("[API] Request to create new category {}", categoryDto);
         return categoryService.create(categoryDto);
     }
 
     /**
-     * Получение списка всех ролей
-     *
+     * Получение списка всех категорий
      * @return Список всех категорий
      */
     @GetMapping("/findAll")
     public List<CategoryDto> findAll() {
-        log.info("[API] start find all roles");
+        log.info("[API] Request to get all categories");
         return categoryService.getAllCategories();
     }
 
     /**
-     * Изменение существующей роли
-     *
+     * Изменение существующей категории
      * @param categoryDto данные на обновление
-     * @param id      роли
+     * @param id Данные id для получения товара
      * @return categoryDto
      */
-    @PostMapping("/update/{id}")
-    public CategoryDto update(@RequestBody CategoryDto categoryDto, @PathVariable Long id) {
-        log.info("[API] start update role {}", categoryDto);
+    @PostMapping("/{id}")
+    public CategoryDto update(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
+        log.info("API] Request to update category with id {}", id);
         return categoryService.update(categoryDto, id);
     }
 
     /**
-     * Удаление роли по id
-     *
+     * Удалить категорию по id
      * @param id категории
      * @return статус
      */
     @DeleteMapping("/delete/{id}")
     public StatusResponse delete(@PathVariable Long id) {
-        log.info("[API] start delete role_id {}", id);
-        return categoryService.delete(id);
+        log.info("[API] Request to delete category with id {}", id);
+        categoryService.delete(id);
+        return new StatusResponse("Категория успешно удалена");
     }
 
     /**
-     * Удаление всех ролей
-     *
+     * Удаление всех категорий
      * @return статус
      */
     @DeleteMapping
     public StatusResponse deleteAll() {
-        log.info("[API] start delete all roles");
-        return categoryService.deleteAll();
+        log.info("[API] Request to delete all categories");
+        categoryService.deleteAll();
+        return new StatusResponse("Категории успешно удалены");
     }
 }

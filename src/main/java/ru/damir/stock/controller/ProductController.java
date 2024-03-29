@@ -19,65 +19,66 @@ public class ProductController {
     private final ProductService productService;
 
     /**
-     * Добавить новый товар<br>
-     *
-     * @param request Данные для добавления нового товара
+     * Добавить новый товар
+     * @param productDto Данные для добавления нового товара
      */
     @PostMapping
-    public ProductDto createProduct(@Valid @RequestBody ProductDto request) {
-        log.info("Request to create new product");
-        return productService.create(request);
+    public ProductDto create(@Valid @RequestBody ProductDto productDto) {
+        log.info("[API] Request to create new product {}", productDto);
+        return productService.create(productDto);
     }
 
     /**
      * Получить все товары
+     * return Список всех категорий
      */
     @GetMapping
-    public List<ProductDto> getAllProducts() {
-        log.info("Request to get all products");
+    public List<ProductDto> getAll() {
+        log.info("[API] Request to get all products");
         return productService.getAllProducts();
     }
 
     /**
-     * Получить товар по id<br>
-     *
+     * Получить товар по id
      * @param id Данные id для получения товара
+     * return productDto
      */
     @GetMapping("/{id}")
-    public ProductDto getProductById(@PathVariable Long id) {
-        log.info("Request to get product with id {}", id);
+    public ProductDto getById(@PathVariable Long id) {
+        log.info("[API] Request to get product with id {}", id);
         return productService.getById(id);
     }
 
     /**
-     * Обновить товар по id<br>
-     *
+     * Обновить товар по id
      * @param id Данные id для изменения товара
+     * return productDto
      */
     @PostMapping("/{id}")
-    public ProductDto updateProductById(@PathVariable Long id, @RequestBody ProductDto productDto) {
-        log.info("Request to update product with id {}", id);
+    public ProductDto update(@PathVariable Long id, @RequestBody ProductDto productDto) {
+        log.info("[API] Request to update product with id {}", id);
         return productService.update(id, productDto);
     }
 
     /**
-     * Удалить товар по id<br>
-     *
+     * Удалить товар по id
      * @param id Данные id для удаления товара
+     * return Статус
      */
     @DeleteMapping("/{id}")
-    public StatusResponse deleteProduct(@PathVariable Long id) {
-        log.info("Request to delete product with id {}", id);
+    public StatusResponse delete(@PathVariable Long id) {
+        log.info("[API] Request to delete product with id {}", id);
         productService.delete(id);
         return new StatusResponse("Товар успешно удален");
     }
 
     /**
      * Удалить все товары
+     * return Статус
      */
     @DeleteMapping
     public StatusResponse deleteAll() {
-        log.info("Request to delete all products");
+        log.info("[API] Request to delete all products");
         productService.deleteAll();
         return new StatusResponse("Товары успешно удалены");
     }
