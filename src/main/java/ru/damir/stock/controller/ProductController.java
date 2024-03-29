@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.damir.stock.controller.dto.ProductDto;
-import ru.damir.stock.controller.dto.StatusResponse;
+import ru.damir.stock.dto.ProductDto;
+import ru.damir.stock.dto.StatusResponse;
 import ru.damir.stock.service.ProductService;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
         log.info("Request to get product with id {}", id);
-        return productService.get(id);
+        return productService.getById(id);
     }
 
     /**

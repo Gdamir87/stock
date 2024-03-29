@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.stereotype.Service;
 
-import ru.damir.stock.controller.dto.ProductDto;
+import ru.damir.stock.dto.ProductDto;
 import ru.damir.stock.entity.Category;
 import ru.damir.stock.exception.CategoryNotExistException;
 import ru.damir.stock.entity.Product;
@@ -16,7 +16,6 @@ import ru.damir.stock.exception.ProductExistException;
 import ru.damir.stock.exception.ProductNotExistException;
 import ru.damir.stock.repository.CategoryRepository;
 import ru.damir.stock.repository.ProductRepository;
-import ru.damir.stock.utils.Utils;
 import ru.damir.stock.utils.ProductMapper;
 
 import java.util.List;
@@ -65,7 +64,7 @@ public class ProductService {
      *
      * @param id Данные id для получения товара
      */
-    public ProductDto get(Long id) {
+    public ProductDto getById(Long id) {
         Product product = productGetter(id);
         return ProductMapper.toDto(product);
     }
@@ -90,7 +89,7 @@ public class ProductService {
         Product product = productGetter(id); // todo сделать через ProductService.get().
         //Product product = ProductMapper.toProduct(get(id)); // todo Конфликт бина, создается новый экземпляр
         Category category = getCategory(productDto);
-        Utils.fillProduct(product, productDto);
+        ProductMapper.fillProduct(product, productDto);
         product.setCategory(category);
         productRepository.save(product);
         return ProductMapper.toDto(product);

@@ -1,2 +1,2 @@
-TRUNCATE TABLE products;
-TRUNCATE TABLE categories;
+-- TRUNCATE TABLE products;
+-- TRUNCATE TABLE categories;
