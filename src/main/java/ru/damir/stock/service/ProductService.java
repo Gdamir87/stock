@@ -117,11 +117,16 @@ public class ProductService {
         return new StatusResponse("Товары успешно удалены");
     }
 
+    /**
+     * Получить список всех товаров постранично
+     * @param page Номер стартовой страницы
+     * @param size Количество элементов на вывод
+     */
     public Page<ProductDto> getPageOfProducts(int page, int size) {
 
         if (size < 1) throw new MyException("Количество страниц должно быть больше 0");
 
-        Pageable pageRequest = PageRequest.of(page, size, Sort.by("price"));
+        Pageable pageRequest = PageRequest.of(page, size);
         List<ProductDto> allCustomers = ProductMapper.toDto((List<Product>) productRepository.findAll());
         int start = (int) pageRequest.getOffset();
         int end = Math.min((start + pageRequest.getPageSize()), allCustomers.size());
