@@ -123,9 +123,8 @@ public class ProductService {
      * @param size Количество элементов на вывод
      */
     public Page<ProductDto> getPageOfProducts(int page, int size) {
-
-        if (size < 1) throw new MyException("Количество страниц должно быть больше 0");
-
+        if (size < 1)
+            throw new MyException("Количество страниц должно быть больше 0");
         Pageable pageRequest = PageRequest.of(page, size);
         List<ProductDto> allCustomers = ProductMapper.toDto((List<Product>) productRepository.findAll());
         int start = (int) pageRequest.getOffset();
