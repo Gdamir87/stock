@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.collections4.IterableUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ru.damir.stock.dto.ProductDto;
@@ -116,4 +120,18 @@ public class ProductService {
         return new StatusResponse("Товары успешно удалены");
     }
 
+    private Pageable createPageRequestUsing(int page, int size) {
+        return PageRequest.of(page, size);
+    }
+
+    public Page<ProductDto> getPageOfProducts(int page, int size) {
+        Pageable pageRequest = createPageRequestUsing(page, size);
+
+        List<ProductDto> allCustomers = ProductMapper.toDto((List<Product>) productRepository.findAll());
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), allCustomers.size());
+
+        List<ProductDto> pageContent = allCustomers.subList(start, end);
+        return new PageImpl<>(pageContent, pageRequest, allCustomers.size());
+    }
 }

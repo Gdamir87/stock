@@ -1,8 +1,12 @@
 package ru.damir.stock.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.damir.stock.dto.ProductDto;
 import ru.damir.stock.dto.StatusResponse;
@@ -79,5 +83,19 @@ public class ProductController {
     public StatusResponse deleteAll() {
         log.info("[API] Request to delete all products");
         return productService.deleteAll();
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<ProductDto>> getCustomers(@RequestParam(defaultValue = "0") int page,
+                                                         @Min (value = 1, message = "min 1") @RequestParam(defaultValue = "10") int size) {
+
+        Page<ProductDto> productsPage = productService.getPageOfProducts(page, size);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Page-Number", String.valueOf(productsPage.getNumber()));
+        headers.add("X-Page-Size", String.valueOf(productsPage.getSize()));
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(productsPage);
     }
 }
