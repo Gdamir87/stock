@@ -8,7 +8,7 @@ import ru.damir.stock.dto.CategoryDto;
 import ru.damir.stock.dto.ProductDto;
 import ru.damir.stock.dto.StatusResponse;
 import ru.damir.stock.entity.Category;
-import ru.damir.stock.exception.CategoryNotExistException;
+import ru.damir.stock.exception.CategoryExistException;
 import ru.damir.stock.repository.CategoryRepository;
 import ru.damir.stock.utils.CategoryMapper;
 
@@ -25,7 +25,7 @@ public class CategoryService {
     public CategoryDto create(CategoryDto categoryDto) {
         if (categoryRepository.findByName(categoryDto.getName()).isPresent()) {
             log.error("Current product {} is exists", categoryDto);
-            throw new CategoryNotExistException("Такой категория уже существует");
+            throw new CategoryExistException("Такой категория уже существует");
         }
         Category savedCategory = CategoryMapper.toEntity(categoryDto);
         categoryRepository.save(savedCategory);
@@ -41,7 +41,7 @@ public class CategoryService {
         Optional<Category> categoryOptional = categoryRepository.findByName(productDto.getCategoryName());
         if (categoryOptional.isEmpty()) {
             log.error("Category {} doesn't exist", productDto.getCategoryName());
-            throw new CategoryNotExistException("Категории с таким названием не существует");
+            throw new CategoryExistException("Категории с таким названием не существует");
         }
         return categoryOptional.get();
     }
@@ -56,7 +56,7 @@ public class CategoryService {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
         if (categoryOptional.isEmpty()) {
             log.error("Category with id {} doesn't exist", id);
-            throw new CategoryNotExistException("Категории с таким id не существует");
+            throw new CategoryExistException("Категории с таким id не существует");
         }
         Category category = categoryOptional.get();
         category.setName(categoryDto.getName());

@@ -25,8 +25,8 @@ public class Category {
      */
     private String name;
 
-    @ToString.Exclude
-    //@Builder.Default
+//    @ToString.Exclude
+//    @Builder.Default
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 }

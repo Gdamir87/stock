@@ -15,7 +15,6 @@ import ru.damir.stock.entity.Category;
 import ru.damir.stock.entity.Product;
 import ru.damir.stock.exception.MyException;
 import ru.damir.stock.exception.ProductExistException;
-import ru.damir.stock.exception.ProductNotExistException;
 import ru.damir.stock.repository.ProductRepository;
 import ru.damir.stock.utils.ProductMapper;
 
@@ -54,7 +53,7 @@ public class ProductService {
         List<Product> products = IterableUtils.toList(productRepository.findAll());
         if (products.isEmpty()) {
             log.error("Products list is empty");
-            throw new ProductNotExistException("Список товаров пуст");
+            throw new ProductExistException("Список товаров пуст");
         }
         return ProductMapper.toDto(products);
     }
@@ -67,7 +66,7 @@ public class ProductService {
         Optional <Product> productOptional = productRepository.findById(id);
         if (productOptional.isEmpty()) {
             log.error("Product with id {} doesn't exist", id);
-            throw new ProductNotExistException("Товара с таким id не существует");
+            throw new ProductExistException("Товара с таким id не существует");
         }
         return ProductMapper.toDto(productOptional.get());
     }
@@ -83,7 +82,7 @@ public class ProductService {
         Optional <Product> productOptional = productRepository.findById(id);
         if (productOptional.isEmpty()) {
             log.error("Product with id {} doesn't exist", id);
-            throw new ProductNotExistException("Товара с таким id не существует");
+            throw new ProductExistException("Товара с таким id не существует");
         }
         Product product = productOptional.get();
         ProductMapper.fillProduct(product, productDto);
@@ -101,7 +100,7 @@ public class ProductService {
     public StatusResponse delete(Long id) {
         if (!productRepository.existsById(id)) {
             log.error("Product with id {} doesn't exists", id);
-            throw new ProductNotExistException("Товара с таким id не существует");
+            throw new ProductExistException("Товара с таким id не существует");
         }
         productRepository.deleteById(id);
         log.info("Product with id {} was deleted", id);
