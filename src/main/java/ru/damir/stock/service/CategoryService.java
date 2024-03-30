@@ -9,6 +9,7 @@ import ru.damir.stock.dto.ProductDto;
 import ru.damir.stock.dto.StatusResponse;
 import ru.damir.stock.entity.Category;
 import ru.damir.stock.exception.CategoryNotExistException;
+import ru.damir.stock.exception.ProductNotExistException;
 import ru.damir.stock.repository.CategoryRepository;
 import ru.damir.stock.utils.CategoryMapper;
 
@@ -33,7 +34,6 @@ public class CategoryService {
      *
      * @param productDto Данные для поиска из запроса
      */
-    @Transactional
     public Category findCategory(ProductDto productDto) {
         Optional<Category> categoryOptional = categoryRepository.findByName(productDto.getCategoryName());
         if (categoryOptional.isEmpty()) {
@@ -43,7 +43,6 @@ public class CategoryService {
         return categoryOptional.get();
     }
 
-    @Transactional
     public List<CategoryDto> getAllCategories() {
         Iterable<Category> allRoles = categoryRepository.findAll();
         return CategoryMapper.toDtoList(allRoles);
@@ -51,10 +50,12 @@ public class CategoryService {
 
     @Transactional
     public CategoryDto update(CategoryDto categoryDto, Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(()
-                        -> new CategoryNotExistException("Id %d of category is not found".formatted(id)));
-
+        Optional<Category> categoryOptional = categoryRepository.findById(id);
+        if (categoryOptional.isEmpty()) {
+            log.error("Category with id {} doesn't exist", id);
+            throw new CategoryNotExistException("Категории с таким id не существует");
+        }
+        Category category = categoryOptional.get();
         category.setName(categoryDto.getName());
         categoryRepository.save(category);
         return CategoryMapper.toDto(category);
