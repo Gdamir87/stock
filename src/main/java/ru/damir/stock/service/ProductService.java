@@ -6,16 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.collections4.IterableUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import ru.damir.stock.dto.ProductDto;
 import ru.damir.stock.dto.StatusResponse;
 import ru.damir.stock.entity.Category;
 import ru.damir.stock.entity.Product;
+import ru.damir.stock.exception.MyException;
 import ru.damir.stock.exception.ProductExistException;
 import ru.damir.stock.exception.ProductNotExistException;
 import ru.damir.stock.repository.ProductRepository;
@@ -120,17 +118,14 @@ public class ProductService {
         return new StatusResponse("Товары успешно удалены");
     }
 
-    private Pageable createPageRequestUsing(int page, int size) {
-        return PageRequest.of(page, size);
-    }
-
     public Page<ProductDto> getPageOfProducts(int page, int size) {
-        Pageable pageRequest = createPageRequestUsing(page, size);
 
+        if (size < 1) throw new MyException("Количество страниц должно быть больше 0");
+
+        Pageable pageRequest = PageRequest.of(page, size, Sort.by("price"));
         List<ProductDto> allCustomers = ProductMapper.toDto((List<Product>) productRepository.findAll());
         int start = (int) pageRequest.getOffset();
         int end = Math.min((start + pageRequest.getPageSize()), allCustomers.size());
-
         List<ProductDto> pageContent = allCustomers.subList(start, end);
         return new PageImpl<>(pageContent, pageRequest, allCustomers.size());
     }

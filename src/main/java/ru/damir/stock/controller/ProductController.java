@@ -24,6 +24,7 @@ public class ProductController {
 
     /**
      * Добавить новый товар
+     *
      * @param productDto Данные для добавления нового товара
      */
     @PostMapping
@@ -44,8 +45,9 @@ public class ProductController {
 
     /**
      * Получить товар по id
+     *
      * @param id Данные id для получения товара
-     * return productDto
+     *           return productDto
      */
     @GetMapping("/{id}")
     public ProductDto getById(@PathVariable Long id) {
@@ -55,8 +57,9 @@ public class ProductController {
 
     /**
      * Обновить товар по id
+     *
      * @param id Данные id для изменения товара
-     * return productDto
+     *           return productDto
      */
     @PostMapping("/{id}")
     public ProductDto update(@PathVariable Long id, @RequestBody ProductDto productDto) {
@@ -66,8 +69,9 @@ public class ProductController {
 
     /**
      * Удалить товар по id
+     *
      * @param id Данные id для удаления товара
-     * return Статус
+     *           return Статус
      */
     @DeleteMapping("/{id}")
     public StatusResponse delete(@PathVariable Long id) {
@@ -87,7 +91,7 @@ public class ProductController {
 
     @GetMapping("/page")
     public ResponseEntity<Page<ProductDto>> getCustomers(@RequestParam(defaultValue = "0") int page,
-                                                         @Min (value = 1, message = "min 1") @RequestParam(defaultValue = "10") int size) {
+                                                         @RequestParam(defaultValue = "10") int size) {
 
         Page<ProductDto> productsPage = productService.getPageOfProducts(page, size);
         HttpHeaders headers = new HttpHeaders();

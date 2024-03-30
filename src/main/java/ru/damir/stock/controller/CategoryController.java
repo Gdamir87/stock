@@ -22,7 +22,7 @@ public class CategoryController {
      * @param categoryDto Новая категория
      * @return categoryDto
      */
-    @PostMapping("/create")
+    @PostMapping
     public CategoryDto create(@Valid @RequestBody CategoryDto categoryDto) {
         log.info("[API] Request to create new category {}", categoryDto);
         return categoryService.create(categoryDto);
@@ -32,7 +32,7 @@ public class CategoryController {
      * Получение списка всех категорий
      * @return Список всех категорий
      */
-    @GetMapping("/findAll")
+    @GetMapping
     public List<CategoryDto> findAll() {
         log.info("[API] Request to get all categories");
         return categoryService.getAllCategories();
@@ -55,7 +55,7 @@ public class CategoryController {
      * @param id категории
      * @return Статус
      */
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public StatusResponse delete(@PathVariable Long id) {
         log.info("[API] Request to delete category with id {}", id);
         return categoryService.delete(id);
@@ -67,6 +67,7 @@ public class CategoryController {
      */
     @DeleteMapping
     public StatusResponse deleteAll() {
+
         log.info("[API] Request to delete all categories");
         return categoryService.deleteAll();
     }

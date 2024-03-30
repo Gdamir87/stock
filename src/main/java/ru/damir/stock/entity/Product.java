@@ -48,7 +48,7 @@ public class Product {
      * Количество на складе
      */
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
 }

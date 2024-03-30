@@ -9,7 +9,6 @@ import ru.damir.stock.dto.ProductDto;
 import ru.damir.stock.dto.StatusResponse;
 import ru.damir.stock.entity.Category;
 import ru.damir.stock.exception.CategoryNotExistException;
-import ru.damir.stock.exception.ProductNotExistException;
 import ru.damir.stock.repository.CategoryRepository;
 import ru.damir.stock.utils.CategoryMapper;
 
@@ -24,6 +23,10 @@ public class CategoryService {
 
     @Transactional
     public CategoryDto create(CategoryDto categoryDto) {
+        if (categoryRepository.findByName(categoryDto.getName()).isPresent()) {
+            log.error("Current product {} is exists", categoryDto);
+            throw new CategoryNotExistException("Такой категория уже существует");
+        }
         Category savedCategory = CategoryMapper.toEntity(categoryDto);
         categoryRepository.save(savedCategory);
         return CategoryMapper.toDto(savedCategory);
