@@ -1,5 +1,6 @@
 package ru.damir.stock.service;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,10 @@ import ru.damir.stock.repository.ProductRepository;
 import ru.damir.stock.utils.ProductMapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -28,6 +32,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+    private final EntityManager entityManager;
 
     /**
      * Получить товар по id
@@ -131,5 +136,26 @@ public class ProductService {
         int end = Math.min((start + pageRequest.getPageSize()), allCustomers.size());
         List<ProductDto> pageContent = allCustomers.subList(start, end);
         return new PageImpl<>(pageContent, pageRequest, allCustomers.size());
+    }
+
+    public List<ProductDto> getAllProductByCategory(String name, String lastName, Long age) {
+
+
+
+        Map<String, List<Product>> productsByCategory = IterableUtils.toList(productRepository.findAll()).stream()
+                .collect(Collectors.groupingBy(product -> product.getCategory().getName()));
+
+        // key = Аксессуары, value = List.of(Product(id=1, name=чехол))
+
+        List<Product> accessories = productsByCategory.get("Аксессуары");
+        List<Product> mobiles = productsByCategory.get("Смартфоны");
+        List<Product> tvs = productsByCategory.get("Телевизоры");
+
+        // Вывести на экран аксессуары
+        System.out.println(accessories);
+        // TV удалить все товары
+        productRepository.deleteAll(tvs);
+        // Мобильные устройства вернуть в ответе метода
+        return ProductMapper.toDto(mobiles);
     }
 }
