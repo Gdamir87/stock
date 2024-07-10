@@ -9,13 +9,13 @@ databaseChangeLog:
       rollback:
         - sqlFile:
             path: db/rollback/R-01.sql
-  - changeSet:
-      id: 2
-      author: Damir Gaifulin
-      comment: put data in table 'categories'
-      changes:
-        - sqlFile:
-            path: db/sql/M-02.sql
-      rollback:
-        - sqlFile:
-            path: db/rollback/R-02.sql
+#  - changeSet:
+#      id: 2
+#      author: Damir Gaifulin
+#      comment: put data in table 'categories'
+#      changes:
+#        - sqlFile:
+#            path: db/sql/M-02.sql
+#      rollback:
+#        - sqlFile:
+#            path: db/rollback/R-02.sql

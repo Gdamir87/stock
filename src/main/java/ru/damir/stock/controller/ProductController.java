@@ -1,11 +1,15 @@
 package ru.damir.stock.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.damir.stock.controller.dto.ProductDto;
-import ru.damir.stock.controller.dto.StatusResponse;
+import ru.damir.stock.dto.ProductDto;
+import ru.damir.stock.dto.StatusResponse;
 import ru.damir.stock.service.ProductService;
 
 import java.util.List;
@@ -19,66 +23,83 @@ public class ProductController {
     private final ProductService productService;
 
     /**
-     * Добавить новый товар<br>
+     * Добавить новый товар
      *
-     * @param request Данные для добавления нового товара
+     * @param productDto Данные для добавления нового товара
      */
     @PostMapping
-    public ProductDto createProduct(@Valid @RequestBody ProductDto request) {
-        log.info("Request to create new product");
-        return productService.create(request);
+    public ProductDto create(@Valid @RequestBody ProductDto productDto) {
+        log.info("[API] Request to create new product {}", productDto);
+        return productService.create(productDto);
     }
 
     /**
      * Получить все товары
+     * return Список всех категорий
      */
     @GetMapping
-    public List<ProductDto> getAllProducts() {
-        log.info("Request to get all products");
+    public List<ProductDto> getAll() {
+        log.info("[API] Request to get all products");
         return productService.getAllProducts();
     }
 
     /**
-     * Получить товар по id<br>
+     * Получить товар по id
      *
      * @param id Данные id для получения товара
+     *           return productDto
      */
     @GetMapping("/{id}")
-    public ProductDto getProductById(@PathVariable Long id) {
-        log.info("Request to get product with id {}", id);
-        return productService.get(id);
+    public ProductDto getById(@PathVariable Long id) {
+        log.info("[API] Request to get product with id {}", id);
+        return productService.getById(id);
     }
 
     /**
-     * Обновить товар по id<br>
+     * Обновить товар по id
      *
      * @param id Данные id для изменения товара
+     *           return productDto
      */
     @PostMapping("/{id}")
-    public ProductDto updateProductById(@PathVariable Long id, @RequestBody ProductDto productDto) {
-        log.info("Request to update product with id {}", id);
+    public ProductDto update(@PathVariable Long id, @RequestBody ProductDto productDto) {
+        log.info("[API] Request to update product with id {}", id);
         return productService.update(id, productDto);
     }
 
     /**
-     * Удалить товар по id<br>
+     * Удалить товар по id
      *
      * @param id Данные id для удаления товара
+     *           return Статус
      */
     @DeleteMapping("/{id}")
-    public StatusResponse deleteProduct(@PathVariable Long id) {
-        log.info("Request to delete product with id {}", id);
-        productService.delete(id);
-        return new StatusResponse("Товар успешно удален");
+    public StatusResponse delete(@PathVariable Long id) {
+        log.info("[API] Request to delete product with id {}", id);
+        return productService.delete(id);
     }
 
     /**
      * Удалить все товары
+     * return Статус
      */
     @DeleteMapping
     public StatusResponse deleteAll() {
-        log.info("Request to delete all products");
-        productService.deleteAll();
-        return new StatusResponse("Товары успешно удалены");
+        log.info("[API] Request to delete all products");
+        return productService.deleteAll();
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<ProductDto>> getCustomers(@RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size) {
+
+        Page<ProductDto> productsPage = productService.getPageOfProducts(page, size);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Page-Number", String.valueOf(productsPage.getNumber()));
+        headers.add("X-Page-Size", String.valueOf(productsPage.getSize()));
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(productsPage);
     }
 }

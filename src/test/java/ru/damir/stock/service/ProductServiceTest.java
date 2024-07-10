@@ -7,10 +7,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.damir.stock.controller.dto.ProductDto;
+import ru.damir.stock.dto.ProductDto;
 import ru.damir.stock.entity.Product;
 import ru.damir.stock.repository.ProductRepository;
-import ru.damir.stock.utils.Utils;
+import ru.damir.stock.utils.ProductMapper;
 
 import java.util.Optional;
 
@@ -46,7 +46,7 @@ class ProductServiceTest {
                 .thenReturn(Optional.empty());
 
         Assertions.assertThrowsExactly(RuntimeException.class,
-                () -> Utils.fillProduct(null, null));
+                () -> ProductMapper.fillProduct(null, null));
     }
 
     @Test

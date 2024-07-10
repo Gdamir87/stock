@@ -3,6 +3,8 @@ package ru.damir.stock.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -22,4 +24,9 @@ public class Category {
      * Название категории
      */
     private String name;
+
+//    @ToString.Exclude
+//    @Builder.Default
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products;
 }

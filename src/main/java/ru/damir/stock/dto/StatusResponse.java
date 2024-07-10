@@ -1,4 +1,4 @@
-package ru.damir.stock.controller.dto;
+package ru.damir.stock.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

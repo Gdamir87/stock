@@ -1,7 +1,7 @@
 CREATE TABLE categories
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(255)
+    name VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE products

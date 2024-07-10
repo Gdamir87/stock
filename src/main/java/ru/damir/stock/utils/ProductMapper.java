@@ -1,7 +1,8 @@
 package ru.damir.stock.utils;
 
 import lombok.*;
-import ru.damir.stock.controller.dto.ProductDto;
+import org.apache.commons.lang3.StringUtils;
+import ru.damir.stock.dto.ProductDto;
 
 import ru.damir.stock.entity.Product;
 
@@ -38,6 +39,26 @@ public class ProductMapper {
         return products.stream()
                 .map(ProductMapper::toDto)
                 .toList();
+    }
+
+    public static void fillProduct(Product product, ProductDto productDto) {
+        if (StringUtils.isNotBlank(productDto.getArticle()))
+            product.setArticle(productDto.getArticle());
+
+        if (StringUtils.isNotBlank(productDto.getName()))
+            product.setName(productDto.getName());
+
+        if (productDto.getDescription() != null)
+            product.setDescription(productDto.getDescription());
+
+        if ((productDto.getPrice() != null) && (productDto.getPrice().signum() > 0))
+            product.setPrice(productDto.getPrice());
+
+        if ((productDto.getQuantity() != null) && (productDto.getQuantity() >= 1))
+            product.setQuantity(productDto.getQuantity());
+
+        if (StringUtils.isNotBlank(productDto.getCategoryName()))
+            productDto.setCategoryName(product.getCategory().getName());
     }
 
 }
